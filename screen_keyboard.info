@@ -1,0 +1,5 @@
+name = Screen keyboard
+description = Attach on-screen keyboard to a text fields for mouse-driven entry.
+package = User interface
+core = 7.x
+configure = admin/config/user-interface/screen-keyboard

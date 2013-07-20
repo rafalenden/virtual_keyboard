@@ -1,0 +1,15 @@
+.screen-keyboard-trigger {
+  text-indent: -9999px;
+  width: 19px;
+  height: 11px;
+  background: url(images/keyboard.png) no-repeat;
+  cursor: pointer;
+  display: inline-block;
+  opacity: 0.8;
+}
+.screen-keyboard-trigger:hover {
+  opacity: 1;
+}
+.screen-keyboard-trigger:active {
+  opacity: 0.6;
+}
