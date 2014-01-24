@@ -1,4 +1,4 @@
-.screen-keyboard-trigger {
+.virtual-keyboard-trigger {
   text-indent: -9999px;
   width: 19px;
   height: 11px;
@@ -7,9 +7,9 @@
   display: inline-block;
   opacity: 0.8;
 }
-.screen-keyboard-trigger:hover {
+.virtual-keyboard-trigger:hover {
   opacity: 1;
 }
-.screen-keyboard-trigger:active {
+.virtual-keyboard-trigger:active {
   opacity: 0.6;
 }

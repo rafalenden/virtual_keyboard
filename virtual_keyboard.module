@@ -3,15 +3,15 @@
 /**
  * Implements hook_menu().
  */
-function screen_keyboard_menu() {
+function virtual_keyboard_menu() {
   $items = array();
-  $items['admin/config/user-interface/screen-keyboard'] = array(
-    'title' => 'Screen keyboard',
-    'description' => 'Attach a on-screen keyboard to a text fields for mouse-driven entry.',
+  $items['admin/config/user-interface/virtual-keyboard'] = array(
+    'title' => 'Virtual keyboard',
+    'description' => 'Attach a on-virtual keyboard to a text fields for mouse-driven entry.',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('screen_keyboard_admin_settings'),
-    'access arguments' => array('administer screen keyboard'),
-    'file' => 'screen_keyboard.admin.inc',
+    'page arguments' => array('virtual_keyboard_admin_settings'),
+    'access arguments' => array('administer virtual keyboard'),
+    'file' => 'virtual_keyboard.admin.inc',
   );
   return $items;
 }
@@ -19,13 +19,13 @@ function screen_keyboard_menu() {
 /**
  * Implements hook_permission().
  */
-function screen_keyboard_permission() {
+function virtual_keyboard_permission() {
   return array(
-    'administer screen keyboard' => array(
-      'title' => t('Administer screen keyboard settings'),
+    'administer virtual keyboard' => array(
+      'title' => t('Administer virtual keyboard settings'),
     ),
-    'use screen keyboard' => array(
-      'title' => t('Use screen keyboard'),
+    'use virtual keyboard' => array(
+      'title' => t('Use virtual keyboard'),
     ),
   );
 }
@@ -33,11 +33,12 @@ function screen_keyboard_permission() {
 /**
  * Implements hook_libraries_info().
  */
-function screen_keyboard_libraries_info() {
+function virtual_keyboard_libraries_info() {
   $libraries['jquery.keyboard'] = array(
     'title' => 'jQuery Virtual Keyboard',
     'vendor url' => 'https://github.com/Mottie/Keyboard',
     'download url' => 'https://github.com/Mottie/Keyboard/archive/master.zip',
+    'version' => '1',
     'files' => array(
       'js' => array(
         'js/jquery.keyboard.min.js',
@@ -53,13 +54,13 @@ function screen_keyboard_libraries_info() {
 /**
  * Implements hook_element_info_alter().
  */
-function screen_keyboard_element_info_alter(&$types) {
+function virtual_keyboard_element_info_alter(&$types) {
   foreach (array_keys($types) as $type) {
     switch ($type) {
       case 'form':
       case 'textarea':
       case 'textfield':
-        $types[$type]['#process'][] = 'screen_keyboard_process_element';
+        $types[$type]['#process'][] = 'virtual_keyboard_process_element';
         break;
     }
   }
@@ -74,29 +75,29 @@ function screen_keyboard_element_info_alter(&$types) {
  * @return array
  *   The processed element.
  */
-function screen_keyboard_process_element($element) {
-  if (isset($element['#screen_keyboard'])) {
-    $action = $element['#screen_keyboard'] == TRUE ? 'include' : 'exclude';
+function virtual_keyboard_process_element($element) {
+  if (isset($element['#virtual_keyboard'])) {
+    $action = $element['#virtual_keyboard'] == TRUE ? 'include' : 'exclude';
     if ($element['#type'] == 'form') {
-      $element['#attributes']['class'][] = 'screen-keyboard-' . $action . '-children';
+      $element['#attributes']['class'][] = 'virtual-keyboard-' . $action . '-children';
     }
     else {
-      $element['#attributes']['class'][] = 'screen-keyboard-' . $action;
+      $element['#attributes']['class'][] = 'virtual-keyboard-' . $action;
     }
   }
   if ($element['#type'] == 'form') {
-    screen_keyboard_attach($element);
+    virtual_keyboard_attach($element);
   }
   return $element;
 }
 
 /**
- * Adds screen keyboard support to form element.
- * 
+ * Adds virtual keyboard support to form element.
+ *
  * @param array $element
  *   Form API element.
  */
-function screen_keyboard_attach(&$element) {
+function virtual_keyboard_attach(&$element) {
   // Adding Virtual Keyboard plugin library.
   if (!module_exists('libraries') || !libraries_detect('jquery.keyboard')) {
     return;
@@ -111,20 +112,20 @@ function screen_keyboard_attach(&$element) {
   $element['#attached']['js'][] = array(
     'type' => 'setting',
     'data' => array(
-      'screen_keyboard' => array(
-        'include' => str_replace($whitechars, ',', variable_get('screen_keyboard_include', '')),
-        'exclude' => str_replace($whitechars, ',', variable_get('screen_keyboard_exclude', '')),
+      'virtual_keyboard' => array(
+        'include' => str_replace($whitechars, ',', variable_get('virtual_keyboard_include', '')),
+        'exclude' => str_replace($whitechars, ',', variable_get('virtual_keyboard_exclude', '')),
       ),
     ),
   );
   // Adding module JS file.
   $element['#attached']['js'][] = array(
     'type' => 'file',
-    'data' => drupal_get_path('module', 'screen_keyboard') . '/screen_keyboard.js',
+    'data' => drupal_get_path('module', 'virtual_keyboard') . '/virtual_keyboard.js',
   );
   // Adding module CSS file.
   $element['#attached']['css'][] = array(
     'type' => 'file',
-    'data' => drupal_get_path('module', 'screen_keyboard') . '/screen_keyboard.css',
+    'data' => drupal_get_path('module', 'virtual_keyboard') . '/virtual_keyboard.css',
   );
 }

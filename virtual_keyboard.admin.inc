@@ -8,7 +8,7 @@
 /**
  * Configuration page.
  */
-function screen_keyboard_admin_settings() {
+function virtual_keyboard_admin_settings() {
   $form = array();
 
   $rows = array(
@@ -28,17 +28,17 @@ function screen_keyboard_admin_settings() {
     '#type' => 'fieldset',
     '#title' => t('Visibility settings'),
   );
-  $form['selectors']['screen_keyboard_include'] = array(
+  $form['selectors']['virtual_keyboard_include'] = array(
     '#type' => 'textarea',
     '#title' => t('Include text fields matching the pattern'),
     '#description' => t('CSS selectors (one per line).'),
-    '#default_value' => variable_get('screen_keyboard_include', ''),
+    '#default_value' => variable_get('virtual_keyboard_include', ''),
   );
-  $form['selectors']['screen_keyboard_exclude'] = array(
+  $form['selectors']['virtual_keyboard_exclude'] = array(
     '#type' => 'textarea',
     '#title' => t('Exclude text fields matching the pattern'),
     '#description' => t('CSS selectors (one per line).'),
-    '#default_value' => variable_get('screen_keyboard_exclude', ''),
+    '#default_value' => variable_get('virtual_keyboard_exclude', ''),
   );
   $form['selectors']['examples'] = array(
     '#type' => 'fieldset',
