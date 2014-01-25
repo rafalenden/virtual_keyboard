@@ -8,8 +8,8 @@
 function virtual_keyboard_menu() {
   $items = array();
   $items['admin/config/user-interface/virtual-keyboard'] = array(
-    'title' => 'Virtual keyboard',
-    'description' => 'Attach a on-virtual keyboard to a text fields for mouse-driven entry.',
+    'title' => 'Virtual Keyboard',
+    'description' => 'Attach virtual keyboard to a text fields for mouse-driven entry.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('virtual_keyboard_admin_settings'),
     'access arguments' => array('administer virtual keyboard'),
