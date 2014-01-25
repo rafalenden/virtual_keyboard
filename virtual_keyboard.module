@@ -1,5 +1,7 @@
 <?php
 
+// http://jsfiddle.net/Mottie/Em8sG/624/
+
 /**
  * Implements hook_menu().
  */
@@ -78,6 +80,7 @@ function virtual_keyboard_element_info_alter(&$types) {
 function virtual_keyboard_process_element($element) {
   if (isset($element['#virtual_keyboard'])) {
     $action = $element['#virtual_keyboard'] == TRUE ? 'include' : 'exclude';
+
     if ($element['#type'] == 'form') {
       $element['#attributes']['class'][] = 'virtual-keyboard-' . $action . '-children';
     }
@@ -85,6 +88,7 @@ function virtual_keyboard_process_element($element) {
       $element['#attributes']['class'][] = 'virtual-keyboard-' . $action;
     }
   }
+
   if ($element['#type'] == 'form') {
     virtual_keyboard_attach($element);
   }
@@ -103,6 +107,22 @@ function virtual_keyboard_attach(&$element) {
     return;
   }
 
+  $options = array(
+    'layout' => 'qwerty',
+    'stayOpen' => FALSE,
+    'autoAccept' => TRUE,
+    'usePreview' => FALSE,
+    'openOn' => NULL,
+    'tabNavigation' => TRUE,
+    'triggerHeight' => 5,
+    'position' => array(
+      'my' => 'left top',
+      'at' => 'left bottom',
+      'at2' => 'left bottom',
+    ),
+  );
+  drupal_alter('virtual_keyboard_options', $options);
+
   $element['#attached']['library'][] = array('system', 'ui');
   $element['#attached']['library'][] = array('system', 'ui.position');
   $element['#attached']['libraries_load'][] = array('jquery.keyboard');
@@ -115,6 +135,7 @@ function virtual_keyboard_attach(&$element) {
       'virtual_keyboard' => array(
         'include' => str_replace($whitechars, ',', variable_get('virtual_keyboard_include', '')),
         'exclude' => str_replace($whitechars, ',', variable_get('virtual_keyboard_exclude', '')),
+        'options' => $options,
       ),
     ),
   );

@@ -6,6 +6,8 @@
   cursor: pointer;
   display: inline-block;
   opacity: 0.8;
+  position: relative;
+  top: 5px;
 }
 .virtual-keyboard-trigger:hover {
   opacity: 1;
