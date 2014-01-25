@@ -3,11 +3,16 @@
   Drupal.behaviors.virtual_keyboard = {
     attach: function(context, settings) {
       var include = Drupal.settings.virtual_keyboard.include;
-      include += ', .virtual-keyboard-include-children *';
+      if (include) {
+        include += ', ';
+      }
+      include += '.virtual-keyboard-include-children *';
       include += ', .virtual-keyboard-include';
-
       var exclude = Drupal.settings.virtual_keyboard.exclude;
-      exclude += ', .virtual-keyboard-exclude-children *';
+      if (exclude) {
+        exclude += ', ';
+      }
+      exclude += '.virtual-keyboard-exclude-children *';
       exclude += ', .virtual-keyboard-exclude';
 
       $(include, context).not(exclude).each(function() {
@@ -37,7 +42,7 @@
 
   Drupal.theme.prototype.virtual_keyboard_trigger = function(targetId) {
     return $('<span></span>')
-      .append(Drupal.t('Virtual keyboard'))
+      .append(Drupal.t('Virtual Keyboard'))
       .addClass('virtual-keyboard-trigger')
       .attr('id', 'virtual-keyboard-trigger-' + targetId);
   };
