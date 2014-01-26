@@ -21,20 +21,12 @@
 
         $textfield = $(this);
 
-        // Check if element is a textfield
+        // Check if element is a textfield.
         if (!$textfield.is('input[type=text], input[type=number], input[type=url], input[type=email], input[type=tel], input[type=password], textarea')) {
           return;
         }
 
         var trigger = Drupal.theme('virtual_keyboard_trigger', this.id);
-
-        if (!$textfield.is('textarea')) {
-          var textfieldHeight = ($textfield.height() / 2) - options.triggerHeight;
-          $(trigger).css({
-            top: textfieldHeight,
-            left: textfieldHeight
-          })
-        }
 
         // Show num pad.
         if ($textfield.is('input[type=number], input[type=tel]')) {
@@ -49,11 +41,13 @@
           $textfield.keyboard(options).after(trigger);
         }
 
+        // Button with keyboard icon is clicked.
         $(trigger).click(function(e) {
           var elementId = this.id.replace('virtual-keyboard-trigger-', '#');
           var keyboard = $(elementId).getkeyboard();
             keyboard.reveal();
         });
+
       });
     }
   }
