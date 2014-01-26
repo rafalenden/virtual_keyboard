@@ -78,20 +78,23 @@ function virtual_keyboard_element_info_alter(&$types) {
  *   The processed element.
  */
 function virtual_keyboard_process_element($element) {
-  if (isset($element['#virtual_keyboard'])) {
-    $action = $element['#virtual_keyboard'] == TRUE ? 'include' : 'exclude';
+  if (user_access('use virtual keyboard')) {
+    if (isset($element['#virtual_keyboard'])) {
+      $action = $element['#virtual_keyboard'] == TRUE ? 'include' : 'exclude';
+
+      if ($element['#type'] == 'form') {
+        $element['#attributes']['class'][] = 'virtual-keyboard-' . $action . '-children';
+      }
+      else {
+        $element['#attributes']['class'][] = 'virtual-keyboard-' . $action;
+      }
+    }
 
     if ($element['#type'] == 'form') {
-      $element['#attributes']['class'][] = 'virtual-keyboard-' . $action . '-children';
-    }
-    else {
-      $element['#attributes']['class'][] = 'virtual-keyboard-' . $action;
+      virtual_keyboard_attach($element);
     }
   }
 
-  if ($element['#type'] == 'form') {
-    virtual_keyboard_attach($element);
-  }
   return $element;
 }
 
