@@ -33,6 +33,12 @@
           options.layout = 'num';
         }
 
+        // Put cursor at the end of textfield.
+        options.visible = function(e, keyboard, el) {
+          var content = keyboard.$el.val();
+          keyboard.$el.focus().val('').val(content);
+        }
+
         // Is resizable.
         if ($textfield.parent().is('.resizable-textarea')) {
           $textfield.keyboard(options).parent().find('.grippie').after(trigger);
