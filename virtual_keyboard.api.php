@@ -7,7 +7,7 @@
 
 /**
  * Alter the options used by Virtual Keyboard plugin.
- * @see https://github.com/Mottie/Keyboard/wiki
+ * @see https://github.com/Mottie/Keyboard/wiki/Options
  *
  * @param array $options
  *   Options used by Virtual Keyboard jQuery plugin.
