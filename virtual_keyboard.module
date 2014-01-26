@@ -1,7 +1,5 @@
 <?php
 
-// http://jsfiddle.net/Mottie/Em8sG/624/
-
 /**
  * Implements hook_menu().
  */
@@ -111,13 +109,21 @@ function virtual_keyboard_attach(&$element) {
   }
 
   $options = array(
+    // Buttons layout for virtual keyboard.
     'layout' => 'qwerty',
+    // When cliked outside keyboard leave keyboard shown.
     'stayOpen' => FALSE,
+    // Don't have to click "Accept" button.
     'autoAccept' => TRUE,
+    // Use the same textfield.
     'usePreview' => FALSE,
+    // Don't open when textfield is focused.
     'openOn' => NULL,
+    // When tab si clicked next textfield is focused.
     'tabNavigation' => TRUE,
+    // Hight of keyboard icon used to show virtual keyboard.
     'triggerHeight' => 5,
+    // Position of virtual keyboard relative to textfield.
     'position' => array(
       'my' => 'left top',
       'at' => 'left bottom',

@@ -7,6 +7,10 @@
 
 /**
  * Alter the options used by Virtual Keyboard plugin.
+ * @see https://github.com/Mottie/Keyboard/wiki
+ *
+ * @param array $options
+ *   Options used by Virtual Keyboard jQuery plugin.
  */
 function hook_virtual_keyboard_options_alter(&$options) {
   // Use custom layout.
