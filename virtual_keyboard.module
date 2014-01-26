@@ -119,8 +119,6 @@ function virtual_keyboard_attach(&$element) {
     'usePreview' => FALSE,
     // Don't open when textfield is focused.
     'openOn' => NULL,
-    // When tab si clicked next textfield is focused.
-    'tabNavigation' => TRUE,
     // Hight of keyboard icon used to show virtual keyboard.
     'triggerHeight' => 5,
     // Position of virtual keyboard relative to textfield.

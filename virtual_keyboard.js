@@ -62,7 +62,10 @@
     return $('<span></span>')
       .append(Drupal.t('Virtual Keyboard'))
       .addClass('virtual-keyboard-trigger')
-      .attr('id', 'virtual-keyboard-trigger-' + targetId);
+      .attr({
+        id: 'virtual-keyboard-trigger-' + targetId,
+        tabindex: -1
+      });
   };
 
 })(jQuery);
