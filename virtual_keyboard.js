@@ -26,8 +26,6 @@
           return;
         }
 
-        var trigger = Drupal.theme('virtual_keyboard_trigger', this.id);
-
         // Show num pad.
         if ($textfield.is('input[type=number], input[type=tel]')) {
           options.layout = 'num';
@@ -39,21 +37,26 @@
           keyboard.$el.focus().val('').val(content);
         }
 
-        // Is resizable.
-        if ($textfield.parent().is('.resizable-textarea')) {
-          $textfield.keyboard(options).parent().find('.grippie').after(trigger);
-        }
-        else {
-          $textfield.keyboard(options).after(trigger);
-        }
+        $textfield.keyboard(options);
 
-        // Button with keyboard icon is clicked.
-        $(trigger).click(function(e) {
-          var elementId = this.id.replace('virtual-keyboard-trigger-', '#');
-          var keyboard = $(elementId).getkeyboard();
-            keyboard.reveal();
-        });
+        if (settings.virtual_keyboard.method !== 'focus') {
+          var trigger = Drupal.theme('virtual_keyboard_trigger', this.id);
 
+          // Is resizable.
+          if ($textfield.parent().is('.resizable-textarea')) {
+            $textfield.parent().find('.grippie').after(trigger);
+          }
+          else {
+            $textfield.after(trigger);
+          }
+
+          // Button with keyboard icon is clicked.
+          $(trigger).click(function(e) {
+            var elementId = this.id.replace('virtual-keyboard-trigger-', '#');
+            var keyboard = $(elementId).getkeyboard();
+              keyboard.reveal();
+          });
+        }
       });
     }
   }

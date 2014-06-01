@@ -146,6 +146,7 @@ function virtual_keyboard_attach(&$element) {
       'virtual_keyboard' => array(
         'include' => str_replace($whitechars, ',', variable_get('virtual_keyboard_include', '')),
         'exclude' => str_replace($whitechars, ',', variable_get('virtual_keyboard_exclude', '')),
+        'method' => variable_get('virtual_keyboard_method', 'icon'),
         'options' => $options,
       ),
     ),
