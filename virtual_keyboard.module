@@ -108,6 +108,10 @@ function virtual_keyboard_attach(&$element) {
     return;
   }
 
+  $focus = in_array(variable_get('virtual_keyboard_method', 'icon'), array('focus', 'icon_and_focus'))
+    ? 'focus'
+    : NULL;
+
   $options = array(
     // Buttons layout for virtual keyboard.
     'layout' => 'qwerty',
@@ -117,8 +121,8 @@ function virtual_keyboard_attach(&$element) {
     'autoAccept' => TRUE,
     // Use the same textfield.
     'usePreview' => FALSE,
-    // Don't open when textfield is focused.
-    'openOn' => NULL,
+    // Method of opening keyboard.
+    'openOn' => $focus,
     // Hight of keyboard icon used to show virtual keyboard.
     'triggerHeight' => 5,
     // Position of virtual keyboard relative to textfield.

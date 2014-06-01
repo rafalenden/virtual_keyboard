@@ -20,4 +20,5 @@ function virtual_enable() {
 function virtual_keyboard_uninstall() {
   variable_del('virtual_keyboard_include');
   variable_del('virtual_keyboard_exclude');
+  variable_del('virtual_keyboard_method');
 }

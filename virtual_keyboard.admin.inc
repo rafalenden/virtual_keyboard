@@ -28,24 +28,39 @@ function virtual_keyboard_admin_settings() {
     '#type' => 'fieldset',
     '#title' => t('Visibility settings'),
   );
+
+  $form['selectors']['virtual_keyboard_method'] = array(
+    '#type' => 'select',
+    '#title' => t('Method of displaying the keyboard'),
+    '#options' => array(
+      'icon' => t('Open keyboard by clicking the icon'),
+      'focus' => t('Open keyboard when focusing on text field'),
+      'icon_and_focus' => t('Both: by clicking the icon and focus'),
+    ),
+    '#default_value' => variable_get('virtual_keyboard_method', 'icon'),
+  );
+
   $form['selectors']['virtual_keyboard_include'] = array(
     '#type' => 'textarea',
     '#title' => t('Include text fields matching the pattern'),
     '#description' => t('CSS selectors (one per line).'),
     '#default_value' => variable_get('virtual_keyboard_include', ''),
   );
+
   $form['selectors']['virtual_keyboard_exclude'] = array(
     '#type' => 'textarea',
     '#title' => t('Exclude text fields matching the pattern'),
     '#description' => t('CSS selectors (one per line).'),
     '#default_value' => variable_get('virtual_keyboard_exclude', ''),
   );
+
   $form['selectors']['examples'] = array(
     '#type' => 'fieldset',
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
     '#title' => t('Examples'),
   );
+
   $form['selectors']['examples']['content'] = array(
     '#markup' => theme('table', $table),
   );
