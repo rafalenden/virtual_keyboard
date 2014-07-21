@@ -51,7 +51,7 @@ function virtual_keyboard_virtual_keyboard_layout_info() {
         '{accept} {space} {cancel}'
       ),
     ),
-    // This default layout.
+    // This is default layout.
     'qwerty' => array(
       'default' => array(
         '` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
@@ -247,10 +247,6 @@ function virtual_keyboard_attach(&$element) {
   );
   drupal_alter('virtual_keyboard_options', $options);
 
-  $layouts = module_invoke_all('virtual_keyboard_layout_info');
-  // Allow modules to alter keyboard layouts.
-  drupal_alter('virtual_keyboard_layout_info', $layouts);
-
   $element['#attached']['library'][] = array('system', 'ui');
   $element['#attached']['library'][] = array('system', 'ui.position');
   $element['#attached']['libraries_load'][] = array('jquery.keyboard');
@@ -265,10 +261,28 @@ function virtual_keyboard_attach(&$element) {
         'exclude' => str_replace($whitechars, ',', variable_get('virtual_keyboard_exclude', '')),
         'method' => variable_get('virtual_keyboard_method', 'icon'),
         'options' => $options,
-        'layouts' => $layouts,
       ),
     ),
   );
+
+  // Adding layouts
+  $layouts_added = &drupal_static(__FUNCTION__, FALSE);
+  if (!$layouts_added) {
+    $layouts = module_invoke_all('virtual_keyboard_layout_info');
+    // Allow modules to alter keyboard layouts.
+    drupal_alter('virtual_keyboard_layout_info', $layouts);
+    $layouts_added = TRUE;
+
+    $element['#attached']['js'][] = array(
+      'type' => 'setting',
+      'data' => array(
+        'virtual_keyboard' => array(
+          'layouts' => $layouts,
+        ),
+      ),
+    );
+  }
+
   // Adding module JS file.
   $element['#attached']['js'][] = array(
     'type' => 'file',
