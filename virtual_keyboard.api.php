@@ -52,7 +52,7 @@ function hook_virtual_keyboard_layout_info() {
  *
  * @param $layouts
  */
-function hook_virtual_keyboard_layout_alter(&$layouts) {
+function hook_virtual_keyboard_layout_info_alter(&$layouts) {
   // Remove row with numbers from qwerty layout.
   if (isset($layouts['qwerty'])) {
     $layouts['qwerty']['default'] = array(
