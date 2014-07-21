@@ -31,6 +31,119 @@ function virtual_keyboard_permission() {
 }
 
 /**
+ * Implements hook_virtual_keyboard_layout_info().
+ */
+function virtual_keyboard_virtual_keyboard_layout_info() {
+  return array(
+    'alpha' => array(
+      'default' => array(
+        '` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
+        '{tab} a b c d e f g h i j [ ] \\',
+        'k l m n o p q r s ; \' {enter}',
+        '{shift} t u v w x y z , . / {shift}',
+        '{accept} {space} {cancel}'
+      ),
+      'shift' => array(
+        '~ ! @ # $ % ^ & * ( ) _ + {bksp}',
+        '{tab} A B C D E F G H I J { } |',
+        'K L M N O P Q R S : " {enter}',
+        '{shift} T U V W X Y Z < > ? {shift}',
+        '{accept} {space} {cancel}'
+      ),
+    ),
+    // This default layout.
+    'qwerty' => array(
+      'default' => array(
+        '` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
+        '{tab} q w e r t y u i o p [ ] \\',
+        'a s d f g h j k l ; \' {enter}',
+        '{shift} z x c v b n m , . / {shift}',
+        '{accept} {space} {cancel}'
+      ),
+      'shift' => array(
+        '~ ! @ # $ % ^ & * ( ) _ + {bksp}',
+        '{tab} Q W E R T Y U I O P { } |',
+        'A S D F G H J K L : " {enter}',
+        '{shift} Z X C V B N M < > ? {shift}',
+        '{accept} {space} {cancel}'
+      ),
+    ),
+    'international' => array(
+      'default' => array(
+        '` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
+        '{tab} q w e r t y u i o p [ ] \\',
+        'a s d f g h j k l ; \' {enter}',
+        '{shift} z x c v b n m , . / {shift}',
+        '{accept} {alt} {space} {alt} {cancel}'
+      ),
+      'shift' => array(
+        '~ ! @ # $ % ^ & * ( ) _ + {bksp}',
+        '{tab} Q W E R T Y U I O P { } |',
+        'A S D F G H J K L : " {enter}',
+        '{shift} Z X C V B N M < > ? {shift}',
+        '{accept} {alt} {space} {alt} {cancel}'
+      ),
+      'alt' => array(
+        '~ \u00a1 \u00b2 \u00b3 \u00a4 \u20ac \u00bc \u00bd \u00be \u2018 \u2019 \u00a5 \u00d7 {bksp}',
+        '{tab} \u00e4 \u00e5 \u00e9 \u00ae \u00fe \u00fc \u00fa \u00ed \u00f3 \u00f6 \u00ab \u00bb \u00ac',
+        '\u00e1 \u00df \u00f0 f g h j k \u00f8 \u00b6 \u00b4 {enter}',
+        '{shift} \u00e6 x \u00a9 v b \u00f1 \u00b5 \u00e7 > \u00bf {shift}',
+        '{accept} {alt} {space} {alt} {cancel}'
+      ),
+      'alt-shift' => array(
+        '~ \u00b9 \u00b2 \u00b3 \u00a3 \u20ac \u00bc \u00bd \u00be \u2018 \u2019 \u00a5 \u00f7 {bksp}',
+        '{tab} \u00c4 \u00c5 \u00c9 \u00ae \u00de \u00dc \u00da \u00cd \u00d3 \u00d6 \u00ab \u00bb \u00a6',
+        '\u00c4 \u00a7 \u00d0 F G H J K \u00d8 \u00b0 \u00a8 {enter}',
+        '{shift} \u00c6 X \u00a2 V B \u00d1 \u00b5 \u00c7 . \u00bf {shift}',
+        '{accept} {alt} {space} {alt} {cancel}'
+      ),
+    ),
+    'colemak' => array(
+      'default' => array(
+        '` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
+        '{tab} q w f p g j l u y ; [ ] \\',
+        '{bksp} a r s t d h n e i o \' {enter}',
+        '{shift} z x c v b k m , . / {shift}',
+        '{accept} {space} {cancel}'
+      ),
+      'shift'  => array(
+        '~ ! @ # $ % ^ & * ( ) _ + {bksp}',
+        '{tab} Q W F P G J L U Y = array( } |',
+        '{bksp} A R S T D H N E I O " {enter}',
+        '{shift} Z X C V B K M < > ? {shift}',
+        '{accept} {space} {cancel}'
+      ),
+    ),
+    'dvorak' => array(
+      'default' => array(
+        '` 1 2 3 4 5 6 7 8 9 0 [ ] {bksp}',
+        '{tab} \' , . p y f g c r l / = \\',
+        'a o e u i d h t n s - {enter}',
+        '{shift} ; q j k x b m w v z {shift}',
+        '{accept} {space} {cancel}'
+      ),
+      'shift'  => array(
+        '~ ! @ # $ % ^ & * ( ) { } {bksp}',
+        '{tab} " < > P Y F G C R L ? + |',
+        'A O E U I D H T N S _ {enter}',
+        '{shift} : Q J K X B M W V Z {shift}',
+        '{accept} {space} {cancel}'
+      ),
+    ),
+    'num' => array(
+      'default'  => array(
+        '= ( ) {b}',
+        '{clear} / * -',
+        '7 8 9 +',
+        '4 5 6 {sign}',
+        '1 2 3 %',
+        '0 . {a} {c}'
+      ),
+    )
+  );
+}
+
+/**
  * Implements hook_libraries_info().
  */
 function virtual_keyboard_libraries_info() {
@@ -134,6 +247,10 @@ function virtual_keyboard_attach(&$element) {
   );
   drupal_alter('virtual_keyboard_options', $options);
 
+  $layouts = module_invoke_all('virtual_keyboard_layout_info');
+  // Allow modules to alter keyboard layouts.
+  drupal_alter('virtual_keyboard_layout_info', $layouts);
+
   $element['#attached']['library'][] = array('system', 'ui');
   $element['#attached']['library'][] = array('system', 'ui.position');
   $element['#attached']['libraries_load'][] = array('jquery.keyboard');
@@ -148,6 +265,7 @@ function virtual_keyboard_attach(&$element) {
         'exclude' => str_replace($whitechars, ',', variable_get('virtual_keyboard_exclude', '')),
         'method' => variable_get('virtual_keyboard_method', 'icon'),
         'options' => $options,
+        'layouts' => $layouts,
       ),
     ),
   );

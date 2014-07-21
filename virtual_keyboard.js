@@ -2,6 +2,9 @@
 
   Drupal.behaviors.virtual_keyboard = {
     attach: function(context, settings) {
+      // Override default layouts by layouts provided by module.
+      $.keyboard.layouts = settings.virtual_keyboard.layouts;
+
       var include = settings.virtual_keyboard.include;
       if (include) {
         include += ', ';
