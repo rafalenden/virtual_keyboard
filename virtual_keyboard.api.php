@@ -55,7 +55,7 @@ function hook_virtual_keyboard_layout_info() {
 function hook_virtual_keyboard_layout_alter(&$layouts) {
   // Remove row with numbers from qwerty layout.
   if (isset($layouts['qwerty'])) {
-    $layouts['default'] = array(
+    $layouts['qwerty']['default'] = array(
       'default' => array(
         // '` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
         '{tab} q w e r t y u i o p [ ] \\',
