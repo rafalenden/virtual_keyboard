@@ -1,6 +1,6 @@
 core = 7.x
 api  = 2
 
-libraries[jquery.placeholder][type] = "libraries"
-libraries[jquery.placeholder][download][type] = "file"
-libraries[jquery.placeholder][download][url] = "https://github.com/Mottie/Keyboard/archive/v1.18.12.zip"
+libraries[jquery.keyboard][type] = "libraries"
+libraries[jquery.keyboard][download][type] = "file"
+libraries[jquery.keyboard][download][url] = "https://github.com/Mottie/Keyboard/archive/v1.18.12.zip"
