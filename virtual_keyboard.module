@@ -150,8 +150,8 @@ function virtual_keyboard_libraries_info() {
   $libraries['jquery.keyboard'] = array(
     'title' => 'jQuery Virtual Keyboard',
     'vendor url' => 'https://github.com/Mottie/Keyboard',
-    'download url' => 'https://github.com/Mottie/Keyboard/archive/master.zip',
-    'version' => '1',
+    'download url' => 'https://github.com/Mottie/Keyboard/archive/v1.18.12.zip',
+    'version' => '1.18.12',
     'files' => array(
       'js' => array(
         'js/jquery.keyboard.min.js',
