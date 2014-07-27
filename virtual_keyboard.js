@@ -22,7 +22,7 @@
         // Set options.
         var options = settings.virtual_keyboard.options;
 
-        $textfield = $(this);
+        var $textfield = $(this);
 
         // Check if element is a textfield.
         if (!$textfield.is('input[type=text], input[type=number], input[type=url], input[type=email], input[type=tel], input[type=password], textarea')) {
@@ -38,7 +38,8 @@
         options.visible = function(e, keyboard, el) {
           var content = keyboard.$el.val();
           keyboard.$el.focus().val('').val(content);
-        }
+          keyboard.$keyboard.draggable();
+        };
 
         $textfield.keyboard(options);
 
@@ -62,7 +63,7 @@
         }
       });
     }
-  }
+  };
 
   Drupal.theme.prototype.virtual_keyboard_trigger = function(targetId) {
     return $('<span></span>')

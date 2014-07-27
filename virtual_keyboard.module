@@ -249,6 +249,7 @@ function virtual_keyboard_attach(&$element) {
 
   $element['#attached']['library'][] = array('system', 'ui');
   $element['#attached']['library'][] = array('system', 'ui.position');
+  $element['#attached']['library'][] = array('system', 'ui.draggable');
   $element['#attached']['libraries_load'][] = array('jquery.keyboard');
 
   // Adding settings.
