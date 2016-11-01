@@ -76,7 +76,7 @@ class SettingsForm extends ConfigFormBase {
       '#rows' => $rows,
     ];
 
-    $form['method'] = array(
+    $form['method'] = [
       '#type' => 'radios',
       '#title' => t('Required field marker'),
       '#options' => [
@@ -85,7 +85,7 @@ class SettingsForm extends ConfigFormBase {
         'icon_and_focus' => t('Both: by clicking the icon and focus'),
       ],
       '#default_value' => $config->get('method'),
-    );
+    ];
 
     return parent::buildForm($form, $form_state);
   }
