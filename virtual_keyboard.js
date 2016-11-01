@@ -1,7 +1,8 @@
-(function($) {
+(function ($) {
+  'use strict';
 
-  Drupal.behaviors.virtual_keyboard = {
-    attach: function(context, settings) {
+  Drupal.behaviors.virtualKeyboard = {
+    attach: function (context, settings) {
       // Override default layouts by layouts provided by module.
       $.keyboard.layouts = settings.virtual_keyboard.layouts;
 
@@ -18,7 +19,7 @@
       exclude += '.virtual-keyboard-exclude-children *';
       exclude += ', .virtual-keyboard-exclude';
 
-      $(include, context).not(exclude).each(function() {
+      $(include, context).not(exclude).each(function () {
         // Set options.
         var options = settings.virtual_keyboard.options;
 
@@ -35,7 +36,7 @@
         }
 
         // Put cursor at the end of textfield.
-        options.visible = function(e, keyboard, el) {
+        options.visible = function (e, keyboard, el) {
           var content = keyboard.$el.val();
           keyboard.$el.focus().val('').val(content);
           keyboard.$keyboard.draggable();
@@ -44,7 +45,7 @@
         $textfield.keyboard(options);
 
         if (settings.virtual_keyboard.method !== 'focus') {
-          var trigger = Drupal.theme('virtual_keyboard_trigger', this.id);
+          var trigger = Drupal.theme('virtualKeyboardTrigger', this.id);
 
           // Is resizable.
           if ($textfield.parent().is('.resizable-textarea')) {
@@ -55,7 +56,7 @@
           }
 
           // Button with keyboard icon is clicked.
-          $(trigger).click(function(e) {
+          $(trigger).click(function (e) {
             var elementId = this.id.replace('virtual-keyboard-trigger-', '#');
             var keyboard = $(elementId).getkeyboard();
               keyboard.reveal();
@@ -65,7 +66,7 @@
     }
   };
 
-  Drupal.theme.prototype.virtual_keyboard_trigger = function(targetId) {
+  Drupal.theme.virtualKeyboardTrigger = function (targetId) {
     return $('<span></span>')
       .append(Drupal.t('Virtual Keyboard'))
       .addClass('virtual-keyboard-trigger')
@@ -75,4 +76,4 @@
       });
   };
 
-})(jQuery);
+})(jQuery, Drupal);

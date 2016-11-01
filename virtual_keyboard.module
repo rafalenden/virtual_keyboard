@@ -1,36 +1,6 @@
 <?php
 
 /**
- * Implements hook_menu().
- */
-function virtual_keyboard_menu() {
-  $items = array();
-  $items['admin/config/user-interface/virtual-keyboard'] = array(
-    'title' => 'Virtual Keyboard',
-    'description' => 'Attach virtual keyboard to a text fields for mouse-driven entry.',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('virtual_keyboard_admin_settings'),
-    'access arguments' => array('administer virtual keyboard'),
-    'file' => 'virtual_keyboard.admin.inc',
-  );
-  return $items;
-}
-
-/**
- * Implements hook_permission().
- */
-function virtual_keyboard_permission() {
-  return array(
-    'administer virtual keyboard' => array(
-      'title' => t('Administer virtual keyboard settings'),
-    ),
-    'use virtual keyboard' => array(
-      'title' => t('Use virtual keyboard'),
-    ),
-  );
-}
-
-/**
  * Implements hook_virtual_keyboard_layout_info().
  */
 function virtual_keyboard_virtual_keyboard_layout_info() {
@@ -144,43 +114,22 @@ function virtual_keyboard_virtual_keyboard_layout_info() {
 }
 
 /**
- * Implements hook_libraries_info().
- */
-function virtual_keyboard_libraries_info() {
-  $libraries['jquery.keyboard'] = array(
-    'title' => 'jQuery Virtual Keyboard',
-    'vendor url' => 'https://github.com/Mottie/Keyboard',
-    'download url' => 'https://github.com/Mottie/Keyboard/archive/v1.18.12.zip',
-    'version' => '1.18.12',
-    'files' => array(
-      'js' => array(
-        'js/jquery.keyboard.min.js',
-      ),
-      'css' => array(
-        'css/keyboard.css',
-      ),
-    ),
-  );
-  return $libraries;
-}
-
-/**
  * Implements hook_element_info_alter().
  */
-function virtual_keyboard_element_info_alter(&$types) {
+function virtual_keyboard_element_info_alter(array &$types) {
   foreach (array_keys($types) as $type) {
     switch ($type) {
       case 'form':
       case 'textarea':
       case 'textfield':
-        $types[$type]['#process'][] = 'virtual_keyboard_process_element';
+        $types[$type]['#pre_render'][] = 'virtual_keyboard_pre_render_element';
         break;
     }
   }
 }
 
 /**
- * Element process callback.
+ * Element pre render callback.
  *
  * @param array $element
  *   The render array element.
@@ -188,8 +137,8 @@ function virtual_keyboard_element_info_alter(&$types) {
  * @return array
  *   The processed element.
  */
-function virtual_keyboard_process_element($element) {
-  if (user_access('use virtual keyboard')) {
+function virtual_keyboard_pre_render_element($element) {
+  if (\Drupal::currentUser()->hasPermission('use virtual keyboard')) {
     if (isset($element['#virtual_keyboard'])) {
       $action = $element['#virtual_keyboard'] == TRUE ? 'include' : 'exclude';
 
@@ -216,12 +165,9 @@ function virtual_keyboard_process_element($element) {
  *   Form API element.
  */
 function virtual_keyboard_attach(&$element) {
-  // Adding Virtual Keyboard plugin library.
-  if (!module_exists('libraries') || !libraries_detect('jquery.keyboard')) {
-    return;
-  }
+  $config = \Drupal::config('virtual_keyboard.settings');
 
-  $focus = in_array(variable_get('virtual_keyboard_method', 'icon'), array('focus', 'icon_and_focus'))
+  $focus = in_array($config->get('method'), array('focus', 'icon_and_focus'))
     ? 'focus'
     : NULL;
 
@@ -243,53 +189,23 @@ function virtual_keyboard_attach(&$element) {
       'at2' => 'left bottom',
     ),
   );
-  drupal_alter('virtual_keyboard_options', $options);
 
-  $element['#attached']['library'][] = array('system', 'ui');
-  $element['#attached']['library'][] = array('system', 'ui.position');
-  $element['#attached']['library'][] = array('system', 'ui.draggable');
-  $element['#attached']['libraries_load'][] = array('jquery.keyboard');
+  \Drupal::moduleHandler()->alter('virtual_keyboard_options', $options);
+
+  $element['#attached']['library'][] = 'virtual_keyboard/virtual_keyboard';
+
+  // Adding layouts
+  $layouts = \Drupal::moduleHandler()->invokeAll('virtual_keyboard_layout_info');
+  // Allow modules to alter keyboard layouts.
+  \Drupal::moduleHandler()->alter('virtual_keyboard_layout_info', $layouts);
 
   // Adding settings.
   $whitechars = array("\r\n", "\r", "\n");
-  $element['#attached']['js'][] = array(
-    'type' => 'setting',
-    'data' => array(
-      'virtual_keyboard' => array(
-        'include' => str_replace($whitechars, ',', variable_get('virtual_keyboard_include', '')),
-        'exclude' => str_replace($whitechars, ',', variable_get('virtual_keyboard_exclude', '')),
-        'method' => variable_get('virtual_keyboard_method', 'icon'),
-        'options' => $options,
-      ),
-    ),
-  );
-
-  // Adding layouts
-  $layouts_added = &drupal_static(__FUNCTION__, FALSE);
-  if (!$layouts_added) {
-    $layouts = module_invoke_all('virtual_keyboard_layout_info');
-    // Allow modules to alter keyboard layouts.
-    drupal_alter('virtual_keyboard_layout_info', $layouts);
-    $layouts_added = TRUE;
-
-    $element['#attached']['js'][] = array(
-      'type' => 'setting',
-      'data' => array(
-        'virtual_keyboard' => array(
-          'layouts' => $layouts,
-        ),
-      ),
-    );
-  }
-
-  // Adding module JS file.
-  $element['#attached']['js'][] = array(
-    'type' => 'file',
-    'data' => drupal_get_path('module', 'virtual_keyboard') . '/virtual_keyboard.js',
-  );
-  // Adding module CSS file.
-  $element['#attached']['css'][] = array(
-    'type' => 'file',
-    'data' => drupal_get_path('module', 'virtual_keyboard') . '/virtual_keyboard.css',
-  );
+  $element['#attached']['drupalSettings']['virtual_keyboard'] = [
+    'include' => str_replace($whitechars, ',', $config->get('included_selectors')),
+    'exclude' => str_replace($whitechars, ',', $config->get('excluded_selectors')),
+    'method' => $config->get('method'),
+    'options' => $options,
+    'layouts' => $layouts,
+  ];
 }

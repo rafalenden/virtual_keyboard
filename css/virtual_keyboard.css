@@ -2,7 +2,7 @@
   text-indent: -9999px;
   width: 19px;
   height: 11px;
-  background: url(images/keyboard.png) no-repeat;
+  background: url(../images/keyboard.png) no-repeat;
   cursor: pointer;
   display: inline-block;
   opacity: 0.8;
